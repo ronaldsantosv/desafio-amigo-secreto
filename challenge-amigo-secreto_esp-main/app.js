@@ -1,31 +1,55 @@
-// El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación. Aquí deberás desarrollar la lógica para resolver el problema.
-let amigos = [];
+let amigos = []; // Lista de amigos
 
-// Implementa una función para agregar amigos
 function agregarAmigo() {
-    const input = document.getElementById('agregar');
+    const input = document.getElementById("amigo");
     const nombre = input.value.trim();
 
     if (nombre === "") {
-        alert("Por favor, inserte un nombre.");
+        alert("Por favor, ingresa un nombre válido.");
         return;
     }
-
+    
+    if (amigos.includes(nombre)) {
+        alert("Este nombre ya está en la lista.");
+        return;
+    }
+    
     amigos.push(nombre);
-    input.value = "";
+    actualizarLista();
+    input.value = ""; // Limpiar campo de entrada
 }
 
-agregarAmigo(amigos);
+function actualizarLista() {
+    const lista = document.getElementById("listaAmigos");
+    lista.innerHTML = ""; // Limpiar lista antes de actualizar
+    
+    amigos.forEach((amigo, index) => {
+        const li = document.createElement("li");
+        li.textContent = amigo;
+        
+        const botonEliminar = document.createElement("button");
+        botonEliminar.textContent = "X";
+        botonEliminar.onclick = () => eliminarAmigo(index);
+        li.appendChild(botonEliminar);
+        
+        lista.appendChild(li);
+    });
+}
 
-// Desarrolla una función, que permita al usuario ingresar un nombre en el campo de texto y añadirlo a la lista de amigos creada anteriormente.
+function eliminarAmigo(index) {
+    amigos.splice(index, 1);
+    actualizarLista();
+}
 
-// Tareas específicas:
- 
-
-// Capturar el valor del campo de entrada: Utilizar document.getElementById o document.querySelector para obtener el texto ingresado por el usuario.
-
-// Validar la entrada: Implementar una validación para asegurarse de que el campo no esté vacío. Si está vacío, mostrar un alert con un mensaje de error: "Por favor, inserte un nombre."
-
-// Actualizar el array de amigos: Si el valor es válido, añadirlo al arreglo que almacena los nombre de amigos usando el método.push().
-
-// Limpiar el campo de entrada: Después de añadir el nombre, restablecer el campo de texto a una cadena vacía.
+function sortearAmigo() {
+    if (amigos.length === 0) {
+        alert("Agrega al menos un amigo antes de sortear.");
+        return;
+    }
+    
+    const indiceSorteado = Math.floor(Math.random() * amigos.length);
+    const amigoSorteado = amigos[indiceSorteado];
+    
+    const resultado = document.getElementById("resultado");
+    resultado.textContent = `El amigo secreto es: ${amigoSorteado}`;
+}
